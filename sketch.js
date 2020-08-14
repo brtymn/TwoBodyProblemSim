@@ -5,7 +5,6 @@ let draggable_2;
 let time_step = 0.5;
 let gravitational_constant = 1000;
 
-
 function setup() {
   createCanvas(500, 500);
   draggable_body_1 = new Draggable_Body(100, 100, 0, 0, 100);
@@ -25,20 +24,6 @@ function draw() {
   draggable_body_2.over();
   draggable_body_2.show();
   draggable_body_2.edge_bounce();
-  
-  Gravity_Move(draggable_body_1, draggable_body_2);
-}
-
-function mousePressed() {
-  draggable_body_1.pressed();
-  draggable_body_2.pressed();
-}
-
-function mouseReleased() {
-  // Quit dragging
-  draggable_body_1.released();
-  draggable_body_2.released();
-}
 
 
 function Gravity_Move(body1, body2){
@@ -80,4 +65,20 @@ function Gravity_Move(body1, body2){
   
   draggable_body_2_velo.add(draggable_body_2_velo.add(acceleration_2.mult(time_step).div(2)));
   
+=======
+  acceleration_1 = ((norm_21.mult(gravitational_constant * body1.mass * body2.mass)).div(pow(dist, 3) * body1.mass));
+
+  acceleration_2 = ((norm_12.mult(gravitational_constant * body1.mass * body2.mass)).div(pow(dist, 3) * body2.mass));
+
+
+  body1_pos.add(velo_1.mult(time_step).add(acceleration_1.mult(pow(time_step, 2)).div(2)));
+
+  velo_1.add(velo_1.add(acceleration_1.mult(time_step).div(2)));
+
+
+
+  body2_pos.add(velo_2.mult(time_step).add(acceleration_2.mult(pow(time_step, 2)).div(2)));
+
+  velo_2.add(velo_2.add(acceleration_2.mult(time_step).div(2)));
+
 }
