@@ -8,11 +8,11 @@ class Draggable_Body {
 
     this.position_vector = createVector(input_x, input_y);
     this.velocity_vector = createVector(input_vx, input_vy);
-    
+
     this.mass = input_mass;
-    
+
     this.diameter = 10;
-    
+
   }
 
   over() {
@@ -63,11 +63,23 @@ class Draggable_Body {
     // Quit dragging
     this.dragging = false;
   }
-  
+
   edge_bounce() {
     if (this.position_vector.y >= height - this.diameter / 2) {
       this.position_vector.y = height - this.diameter / 2;
       this.velocity_vector = this.velocity_vector.mult(-1);
-}
-}
+    }
+    else if (this.position_vector.y < 0 + this.diameter / 2) {
+      this.position_vector.y = 0 + this.diameter / 2;
+      this.velocity_vector = this.velocity_vector.mult(-1);
+    }
+    else if (this.position_vector.x < 0 + this.diameter / 2) {
+      this.position_vector.x = 0 + this.diameter / 2;
+      this.velocity_vector = this.velocity_vector.mult(-1);
+    }
+    else if (this.position_vector.x >= width - this.diameter / 2) {
+      this.position_vector.x = width - this.diameter / 2;
+      this.velocity_vector = this.velocity_vector.mult(-1);
+    }
+  }
 }
