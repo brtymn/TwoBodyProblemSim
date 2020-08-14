@@ -1,89 +1,83 @@
+
+let draggable_1;
+let draggable_2;
+
 let time_step = 0.5;
-let gravitational_constant = 1000000;
-let body_one;
-let body_two;
+let gravitational_constant = 1000;
 
 
 function setup() {
-  createCanvas(800, 800);
-  
-  body_one = new Body(100, 200, 100, 100);
-  body_two = new Body(300, 400, 100, 100);
-  
-  
+  createCanvas(500, 500);
+  draggable_body_1 = new Draggable_Body(100, 100, 0, 0, 100);
+  draggable_body_2 = new Draggable_Body(100, 400, 0, 0, 100);
 }
 
 function draw() {
-  background(50, 89, 100);
-  
-  move_the_system(body_one, body_two);
-  
-  body_one.display_bodies();
-  body_two.display_bodies();
+  background(200);
   
   
+  draggable_body_1.update();
+  draggable_body_1.over();
+  draggable_body_1.show();
+  draggable_body_1.edge_bounce();
   
+  draggable_body_2.update();
+  draggable_body_2.over();
+  draggable_body_2.show();
+  draggable_body_2.edge_bounce();
+  
+  Gravity_Move(draggable_body_1, draggable_body_2);
+}
+
+function mousePressed() {
+  draggable_body_1.pressed();
+  draggable_body_2.pressed();
+}
+
+function mouseReleased() {
+  // Quit dragging
+  draggable_body_1.released();
+  draggable_body_2.released();
 }
 
 
-function calculate_distance(body1, body2, n){
+function Gravity_Move(body1, body2){
   
-  let body1_pos = body1.position_vector;
-  let body2_pos = body2.position_vector;
+  let draggable_body_1_pos = draggable_body_1.position_vector;
+  let draggable_body_2_pos = draggable_body_2.position_vector;
   
-  let body1_pos_to_body2_pos = p5.Vector.sub(body1_pos, body2_pos);
-  let body2_pos_to_body1_pos = p5.Vector.sub(body2_pos, body1_pos);
+  let body1_pos_to_body2_pos = p5.Vector.sub(draggable_body_1_pos, draggable_body_2_pos);
+  let body2_pos_to_body1_pos = p5.Vector.sub(draggable_body_2_pos, draggable_body_1_pos);    
+
+  let dist = body1_pos_to_body2_pos.mag();
+  
+  let norm_12 = body1_pos_to_body2_pos.normalize();
+  let norm_21 = body2_pos_to_body1_pos.normalize();
+  
     
-  if (n == 12){
-    return body1_pos_to_body2_pos;
-  }
-  else if (n == 21){
-    return body2_pos_to_body1_pos;
-  }
+  let draggable_body_1_velo = draggable_body_1.velocity_vector;
+  let draggable_body_2_velo = draggable_body_2.velocity_vector;
   
-}
-
-
-function calculate_forces(body1, body2, n){
+  let norm_12_array = norm_12.array();
+  let norm_21_array = norm_21.array();
   
-  let dist = calculate_distance(body1, body2, 12).mag();
-  let norm_12 = calculate_distance(body1, body2, 12).normalize();
-  let norm_21 = calculate_distance(body1, body2, 21).normalize();
   
-  acceleration_1 = ((norm_21.mult(gravitational_constant * body1.mass * body2.mass)).div(pow(dist, 3) * body1.mass));
+  let draggable_body_1_pos_array = draggable_body_1_pos.array();
+  let draggable_body_2_pos_array = draggable_body_2_pos.array();
   
-  acceleration_2 = ((norm_12.mult(gravitational_constant * body1.mass * body2.mass)).div(pow(dist, 3) * body2.mass));
+  acceleration_1 = ((norm_21.mult(gravitational_constant * draggable_body_1.mass * draggable_body_2.mass)).div(pow(dist, 3) * draggable_body_1.mass));
   
-  if (n == 1){
-    return acceleration_1;
-  }
-  else if (n == 2){
-    return acceleration_2;
-  }
-
+  acceleration_2 = ((norm_12.mult(gravitational_constant * draggable_body_1.mass * draggable_body_2.mass)).div(pow(dist, 3) * draggable_body_2.mass));
+    
   
-}
-
-
-function move_the_system(body1, body2){
+  draggable_body_1_pos.add(draggable_body_1_velo.mult(time_step).add(acceleration_1.mult(pow(time_step, 2)).div(2)));
   
-  let pos_1 = body1.position_vector;
-  let velo_1 = body1.velocity_vector;
-  let acc_1 = calculate_forces(body1, body2, 1);
-  let pos_2 = body2.position_vector;
-  let velo_2 = body1.velocity_vector;
-  let acc_2 = calculate_forces(body1, body2, 2);
-  
-  pos_1.add(velo_1.mult(time_step).add(acc_1.mult(pow(time_step, 2)).div(2)));
-  
-  velo_1.add(velo_1.add(acc_1.mult(time_step).div(2)));
+  draggable_body_1_velo.add(draggable_body_1_velo.add(acceleration_1.mult(time_step).div(2)));
   
   
   
-  pos_2.add(velo_2.mult(time_step).add(acc_2.mult(pow(time_step, 2)).div(2)));
+  draggable_body_2_pos.add(draggable_body_2_velo.mult(time_step).add(acceleration_2.mult(pow(time_step, 2)).div(2)));
   
-  velo_2.add(velo_2.add(acc_2.mult(time_step).div(2)));
+  draggable_body_2_velo.add(draggable_body_2_velo.add(acceleration_2.mult(time_step).div(2)));
   
-
-
 }
