@@ -1,6 +1,6 @@
 
-let draggable_1;
-let draggable_2;
+let draggable_1; // Define the first object.
+let draggable_2; // Define the second onject.
 
 let time_step = 0.5;
 let gravitational_constant = 0; // Initially set to zero to be able to use the start button.
@@ -20,31 +20,33 @@ let initial_velocity_2_y = 0 // Initially set to zero to be able to use the star
 
 
 function setup() {
-  createCanvas(500, 500);
 
-  draggable_body_1 = new Draggable_Body(initial_position_1_x, initial_position_1_y, initial_velocity_1_x, initial_velocity_1_y, 100, 200);
+  createCanvas(500, 500); // Canvas size will be adjusted for the website.
 
-  draggable_body_2 = new Draggable_Body(initial_position_2_x, initial_position_2_y, initial_velocity_2_x, initial_velocity_2_y, 100, 100);
+  draggable_body_1 = new Draggable_Body(initial_position_1_x, initial_position_1_y, initial_velocity_1_x, initial_velocity_1_y, 100, color("Magenta")); // Create the first object.
 
-  //Button Definitions
-  button = createButton("START");
-  button.position(19, 19);
-  button.mousePressed(Start_Sim);
+  draggable_body_2 = new Draggable_Body(initial_position_2_x, initial_position_2_y, initial_velocity_2_x, initial_velocity_2_y, 100, color("Yellow")); // Create the second onject.
 
+  //Button Definitions Start.
 
-  button = createButton('RESET');
-  button.position(19, 50);
-  button.mousePressed(Reset_Bodies);
+  button_start = createButton("START"); // Initialize the button name.
+  button_start.position(19, 19); // Inıtialize the button position.
+  button_start.mousePressed(Start_Sim); // Redirect to a function when the button is clicked.
 
 
+  button_reset = createButton('RESET'); // Initialize the button name.
+  button_reset.position(19, 50); // Initialize the button position.
+  button_reset.mousePressed(Reset_Bodies); // Redirect to a function when the button is clicked.
+
+  // Button Definitions End.
 
 
 
 }
 
 function draw() {
-  background(200);
 
+  background(0);
 
   draggable_body_1.update();
   draggable_body_1.over();
@@ -59,16 +61,21 @@ function draw() {
   Gravity_Move(draggable_body_1, draggable_body_2);
 }
 
+
+
 function mousePressed() {
   draggable_body_1.pressed();
   draggable_body_2.pressed();
 }
+
+
 
 function mouseReleased() {
   // Quit dragging
   draggable_body_1.released();
   draggable_body_2.released();
 }
+
 
 
 function Gravity_Move(body1, body2){
@@ -114,6 +121,14 @@ function Gravity_Move(body1, body2){
 
   draggable_body_2_velo.mult(0.999); // Just an addition to prevent the objects go crazy with velocity.
 
+  if (dist == 2 * draggable_body_1.diameter){
+
+    draggable_body_1.velocity_vector = draggable_body_1.velocity_vector.mult(-0.9);
+    draggable_body_2.velocity_vector = draggable_body_2.velocity_vector.mult(-0.9);
+  }
+
+
+
 }
 
 function Reset_Bodies(){
@@ -130,17 +145,18 @@ function Reset_Bodies(){
 }
 
 
+
 function Start_Sim(){
 
   // New velocity values after the start button is pressed.
-  let start_velocity_1_x = 0;
-  let start_velocity_1_y = 0;
+  let start_velocity_1_x = 5;
+  let start_velocity_1_y = 5;
 
-  let start_velocity_2_x = 0;
-  let start_velocity_2_y = 0;
+  let start_velocity_2_x = 5;
+  let start_velocity_2_y = 5;
 
-  // Give a value to the gravitational constant after the button is pressed.
-  gravitational_constant = 100;
+
+  gravitational_constant = 100; // Give a value to the gravitational constant after the button is pressed.
 
   draggable_body_1.velocity_vector = createVector(start_velocity_1_x, start_velocity_1_y);
   draggable_body_2.velocity_vector = createVector(start_velocity_2_x, start_velocity_2_y);
