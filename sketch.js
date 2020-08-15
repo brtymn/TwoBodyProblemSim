@@ -24,9 +24,7 @@ let mass_2 = 1 // Initially set to zero, the object diameter will depend on this
 
 function setup() {
 
-  createCanvas(500, 500); // Canvas size will be adjusted for the website.
-
-  textSize(10);
+  createCanvas(900, 900); // Canvas size will be adjusted for the website.
 
   draggable_body_1 = new Draggable_Body(initial_position_1_x, initial_position_1_y, initial_velocity_1_x, initial_velocity_1_y, mass_1, color("Magenta")); // Create the first object.
 
@@ -62,23 +60,49 @@ function setup() {
 
 
   slider_body_2_x_axis = createSlider(-100, 100, 5);
-  slider_body_2_x_axis.position(200, 19);
+  slider_body_2_x_axis.position(400, 19);
   slider_body_2_x_axis.style('width', '80px');
 
   slider_body_2_y_axis = createSlider(-100, 100, 5);
-  slider_body_2_y_axis.position(200, 38);
+  slider_body_2_y_axis.position(400, 38);
   slider_body_2_y_axis.style('width', '80px');
 
   slider_body_2_mass = createSlider(1, 500, 5);
-  slider_body_2_mass.position(200, 57);
+  slider_body_2_mass.position(400, 57);
   slider_body_2_mass.style('width', '80px');
 
 
 
-  slider_gravitational_constant = createSlider(0, 1000, 20);
-  slider_gravitational_constant.position(300, 38);
+  slider_gravitational_constant = createSlider(0, 10000, 20);
+  slider_gravitational_constant.position(700, 38);
   slider_gravitational_constant.style('width', '80px');
   // Slider Definitions End.
+
+
+  // Value Displayer Definitions Start.
+  value_display_body_1_x_axis_velo = createP();
+  value_display_body_1_x_axis_velo.position(200, 2);
+
+  value_display_body_1_y_axis_velo = createP();
+  value_display_body_1_y_axis_velo.position(200, 20);
+
+  value_display_body_1_mass = createP();
+  value_display_body_1_mass.position(200, 40);
+
+
+  value_display_body_2_x_axis_velo = createP();
+  value_display_body_2_x_axis_velo.position(500, 2);
+
+  value_display_body_2_y_axis_velo = createP();
+  value_display_body_2_y_axis_velo.position(500, 20);
+
+  value_display_body_2_mass = createP();
+  value_display_body_2_mass.position(500, 40);
+
+
+  value_display_gravitational_constant = createP();
+  value_display_gravitational_constant.position(680, 40);
+  // Value Displayer Definitions End.
 
 }
 
@@ -98,8 +122,15 @@ function draw() {
 
   Gravity_Move(draggable_body_1, draggable_body_2);
 
-  text('Body 1, x-axis:', 100, 100);
+  value_display_body_1_x_axis_velo.html('Velocity on x-axis: '+ slider_body_1_x_axis.value());
+  value_display_body_1_y_axis_velo.html('Velocity on y-axis: '+ slider_body_1_y_axis.value());
+  value_display_body_1_mass.html('Body 1 mass: '+slider_body_1_mass.value());
 
+  value_display_body_2_x_axis_velo.html('Velocity on x-axis: '+ slider_body_2_x_axis.value());
+  value_display_body_2_y_axis_velo.html('Velocity on y-axis: '+ slider_body_2_y_axis.value());
+  value_display_body_2_mass.html('Body 2 mass: '+slider_body_2_mass.value());
+
+  value_display_gravitational_constant.html('Gravitational Constant: ' + slider_gravitational_constant.value());
 }
 
 
