@@ -17,15 +17,20 @@ let initial_position_2_y = 500
 let initial_velocity_2_x = 0 // Initially set to zero to be able to use the start button.
 let initial_velocity_2_y = 0 // Initially set to zero to be able to use the start button.
 
+let mass_1 = 1 // Initially set to zero, the object diameter will depend on this.
+let mass_2 = 1 // Initially set to zero, the object diameter will depend on this.
+
 
 
 function setup() {
 
   createCanvas(500, 500); // Canvas size will be adjusted for the website.
 
-  draggable_body_1 = new Draggable_Body(initial_position_1_x, initial_position_1_y, initial_velocity_1_x, initial_velocity_1_y, 100, color("Magenta")); // Create the first object.
+  textSize(10);
 
-  draggable_body_2 = new Draggable_Body(initial_position_2_x, initial_position_2_y, initial_velocity_2_x, initial_velocity_2_y, 100, color("Yellow")); // Create the second onject.
+  draggable_body_1 = new Draggable_Body(initial_position_1_x, initial_position_1_y, initial_velocity_1_x, initial_velocity_1_y, mass_1, color("Magenta")); // Create the first object.
+
+  draggable_body_2 = new Draggable_Body(initial_position_2_x, initial_position_2_y, initial_velocity_2_x, initial_velocity_2_y, mass_1, color(0, 0, 255)); // Create the second onject.
 
   //Button Definitions Start.
 
@@ -35,18 +40,51 @@ function setup() {
 
 
   button_reset = createButton('RESET'); // Initialize the button name.
-  button_reset.position(19, 50); // Initialize the button position.
+  button_reset.position(19, 57); // Initialize the button position.
   button_reset.mousePressed(Reset_Bodies); // Redirect to a function when the button is clicked.
 
   // Button Definitions End.
 
 
+  // Slider Definitions Start.
+  slider_body_1_x_axis = createSlider(-100, 100, 5);
+  slider_body_1_x_axis.position(100, 19);
+  slider_body_1_x_axis.style('width', '80px');
+
+  slider_body_1_y_axis = createSlider(-100, 100, 5);
+  slider_body_1_y_axis.position(100, 38);
+  slider_body_1_y_axis.style('width', '80px');
+
+  slider_body_1_mass = createSlider(1, 500, 5);
+  slider_body_1_mass.position(100, 57);
+  slider_body_1_mass.style('width', '80px');
+
+
+
+  slider_body_2_x_axis = createSlider(-100, 100, 5);
+  slider_body_2_x_axis.position(200, 19);
+  slider_body_2_x_axis.style('width', '80px');
+
+  slider_body_2_y_axis = createSlider(-100, 100, 5);
+  slider_body_2_y_axis.position(200, 38);
+  slider_body_2_y_axis.style('width', '80px');
+
+  slider_body_2_mass = createSlider(1, 500, 5);
+  slider_body_2_mass.position(200, 57);
+  slider_body_2_mass.style('width', '80px');
+
+
+
+  slider_gravitational_constant = createSlider(0, 1000, 20);
+  slider_gravitational_constant.position(300, 38);
+  slider_gravitational_constant.style('width', '80px');
+  // Slider Definitions End.
 
 }
 
 function draw() {
 
-  background(0);
+  background(255);
 
   draggable_body_1.update();
   draggable_body_1.over();
@@ -59,6 +97,9 @@ function draw() {
   draggable_body_2.edge_bounce();
 
   Gravity_Move(draggable_body_1, draggable_body_2);
+
+  text('Body 1, x-axis:', 100, 100);
+
 }
 
 
@@ -133,7 +174,6 @@ function Gravity_Move(body1, body2){
 
 function Reset_Bodies(){
 
-  gravitational_constant = 0;
 
   draggable_body_1.position_vector  = createVector(initial_position_1_x, initial_position_1_y);
   draggable_body_1.velocity_vector = createVector(initial_velocity_1_x, initial_velocity_1_y);
@@ -149,17 +189,20 @@ function Reset_Bodies(){
 function Start_Sim(){
 
   // New velocity values after the start button is pressed.
-  let start_velocity_1_x = 5;
-  let start_velocity_1_y = 5;
+  let start_velocity_1_x = slider_body_1_x_axis.value();
+  let start_velocity_1_y = slider_body_1_y_axis.value();
 
-  let start_velocity_2_x = 5;
-  let start_velocity_2_y = 5;
+  let start_velocity_2_x = slider_body_2_x_axis.value();
+  let start_velocity_2_y = slider_body_2_y_axis.value();
 
 
-  gravitational_constant = 100; // Give a value to the gravitational constant after the button is pressed.
+  gravitational_constant = slider_gravitational_constant.value(); // Give a value to the gravitational constant after the button is pressed.
 
   draggable_body_1.velocity_vector = createVector(start_velocity_1_x, start_velocity_1_y);
   draggable_body_2.velocity_vector = createVector(start_velocity_2_x, start_velocity_2_y);
+
+  mass_1 = slider_body_1_mass.value();
+  mass_2 = slider_body_2_mass.value();
 
 
 }
