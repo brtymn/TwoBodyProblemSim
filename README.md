@@ -1,4 +1,5 @@
 # TwoBodyProblemSim
-Two body problem simulation created using p5.js.
 
-Two Body Problem Simulation is created for "The PhysHub Project". 
+Two body problem simulation created for "The Physics Hub" project using p5.js. 
+
+! [Screenshot of the simulator](https://github.com/brtymn/TwoBodyProblemSim/edit/master/TwoBodyProblemSim_Image.png)
