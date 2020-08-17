@@ -20,8 +20,8 @@ let initial_velocity_2_y = 0;// Initially set to zero to be able to use the star
 let mass_1 = 1; // Initially set to one, the object diameter will depend on this.
 let mass_2 = 1;// Initially set to one, the object diameter will depend on this.
 
-let diameter_1 = 50;
-let diameter_2 = 100;
+let diameter_1 = 25;
+let diameter_2 = 25;
 
 
 
@@ -110,8 +110,9 @@ function setup() {
 }
 
 function draw() {
+  background(220);
 
-  background(255);
+  grid();
 
 
   draggable_body_1.update();
@@ -136,6 +137,7 @@ function draw() {
   value_display_gravitational_constant.html('Gravitational Constant: ' + slider_gravitational_constant.value());
 
   Gravity_Move(draggable_body_1, draggable_body_2);
+
 }
 
 
@@ -244,4 +246,18 @@ function Start_Sim(){
 
 
 
+}
+
+
+function grid() {
+  for (let x = 0; x < width; x += 50) {
+    stroke(184, 165, 250);
+    strokeWeight(2);
+    line(x, 0, x, height);
+    for (let y = 0; y < height; y += 50) {
+      stroke(184, 165, 250);
+      strokeWeight(2);
+      line(0, y, width, y);
+    }
+  }
 }
